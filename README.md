@@ -97,7 +97,7 @@ See the below feature matrix for the various features the CAmkES ARM VMM impleme
 | exynos5422 | 32-bit  | Unsupported | Supported | Supported | Supported | Supported | Supported | SMP configurations are unsupported due to: * No exynos5422 kernel SMP support * No virtual power device interface to manage VCPU's at runtime (e.g. core startup) |
 | TK1 | 32-bit | Unsupported | Unsupported | Unsupported | Unsupported | Unsupported | Unsupported | SMP configurations are unsupported due to: * No TK1 kernel SMP support * No virtual power device interface to manage VCPU's at runtime (e.g. core startup) Virtio PCI, Console, Net, Cross VM connector support & Multi-VM are untested  |
 | TX1 | 64-bit | Supported | Unsupported | Unsupported | Unsupported | Unsupported | Unsupported | Virtio PCI, Console, Net, Cross VM connector support & Multi-VM are untested |
-| TX2 | 64-bit | Supported | Supported | Supported | Supported | Supported | Unsupported | Cross VM connector support is untested |
+| TX2 | 64-bit | Supported | Supported | Supported | Supported | Supported | Unsupported | Cross VM connector support is untested. VM Minimal and VM Virtio Net natively supported |
 | QEMU Virt | 64-bit | Supported | Unsupported | Supported | Supported | Supported | Supported | Multi-VM support depends on porting the TimeServer to QEMU (See https://github.com/SEL4PROJ/global-components/tree/master/components/TimeServer) |
 
 
