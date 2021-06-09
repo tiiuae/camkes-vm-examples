@@ -35,6 +35,12 @@ elseif("${KernelARMPlatform}" STREQUAL "qemu-arm-virt")
     if(SIMULATION)
         GenerateSimulateScript()
     endif()
+elseif("${KernelARMPlatform}" STREQUAL "rpi4")
+    set(cpp_flags "-DKERNELARMPLATFORM_BCM2711")
+    set(linux_repo "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git")
+    set(linux_tag "5.12.0-rc6+")
+    set(linux_arch "arm64")
+    set(linux_cross_compile "aarch64-linux-gnu-")
 endif()
 
 AddToFileServer("linux" "${CAMKES_VM_IMAGES_DIR}/${KernelARMPlatform}/linux")
@@ -76,30 +82,6 @@ if(BUILD_CROSSVM)
         ${linux_cross_compile}
         DEPENDS
         checkout_linux
-    )
-
-    # Compile CrossVM Dataport Module
-    DefineLinuxModule(
-        ${CAMKES_VM_LINUX_DIR}/camkes-linux-artifacts/camkes-linux-modules/camkes-connector-modules/connection
-        output_module
-        output_module_target
-        KERNEL_DIR
-        ${CMAKE_CURRENT_BINARY_DIR}/linux_out
-        ARCH
-        ${linux_arch}
-        CROSS_COMPILE
-        ${linux_cross_compile}
-        DEPENDS
-        checkout_linux
-        configure_vm_linux
-    )
-    AddFileToOverlayDir(
-        "connection.ko"
-        ${output_module}
-        "lib/modules/4.14.87/kernel/drivers/vmm"
-        overlay
-        DEPENDS
-        output_module_target
     )
 
     # Complile CrossVM Dataport Apps
@@ -205,7 +187,10 @@ AddOverlayDirToRootfs(
     rootfs_target
     GZIP
 )
-AddToFileServer("linux-initrd" ${output_overlayed_rootfs_location} DEPENDS rootfs_target)
+
+#AddToFileServer("linux-initrd" ${output_overlayed_rootfs_location} DEPENDS rootfs_target)
+
+AddToFileServer("linux-initrd-vm0" ${output_overlayed_rootfs_location} DEPENDS rootfs_target)
 
 AddCamkesCPPFlag(
     cpp_flags
@@ -236,3 +221,4 @@ DeclareCAmkESRootserver(
     CPP_INCLUDES
     ${CAMKES_VM_DIR}/components/VM_Arm
 )
+
