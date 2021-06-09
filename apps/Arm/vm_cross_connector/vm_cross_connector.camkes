@@ -38,6 +38,9 @@ assembly {
     composition {
         VM_GENERAL_COMPOSITION_DEF()
         VM_COMPOSITION_DEF(0)
+        /* Add SerialServer functionality for VirtConsole */
+        VM_VIRTUAL_SERIAL_COMPOSITION_DEF(0)
+
         component CrossvmInit crossvm_init;
 
         connection seL4Notification event_conn_0(from vm0.ready,
@@ -53,6 +56,7 @@ assembly {
     configuration {
         VM_GENERAL_CONFIGURATION_DEF()
         VM_CONFIGURATION_DEF(0)
+        VM_VIRTUAL_SERIAL_CONFIGURATION_DEF(0)
 
         vm0.num_extra_frame_caps = 0;
         vm0.extra_frame_map_address = 0;
