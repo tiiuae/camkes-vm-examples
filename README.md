@@ -201,3 +201,4 @@ In addition, when initialising your build, ensure the `KernelMaxNumNodes` config
 ../init-build.sh -DCAMKES_VM_APP=vm_minimal -DPLATFORM=tx2 -DNUM_NODES=4
 ```
 *Note: ensure your platform supports SMP configurations through the above feature matrix*
+
