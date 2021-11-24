@@ -33,13 +33,16 @@ assembly {
             "initrd_addr" : VAR_STRINGIZE(VM_INITRD_ADDR)
         };
 
+        /* either specify "option root-path" in dhcpd.conf or use nfsroot= here */
         vm0.linux_image_config = {
-            "linux_bootcmdline" : "console=hvc0 earlyprintk root=/dev/ram0 rw debug loglevel=7 pci=nomsi initcall_debug initcall_blacklist=clk_disable_unused",
+            "linux_bootcmdline" : "console=hvc0 root=/dev/nfs rootfstype=nfs ip=dhcp rw debug loglevel=7 pci=nomsi initcall_debug initcall_blacklist=clk_disable_unused",
             "linux_stdout" : "hvc0",
         };
 
-        vm0.dtb = dtb([ {} ]);
-        
+        vm0.dtb = dtb([
+            { "path": "/scb/ethernet@7d580000" }
+        ]);
+
 	vm0.mmios = [
 	     "0xff846000:0x1000:12"
         ];

@@ -159,7 +159,7 @@ elseif("${KernelARMPlatform}" STREQUAL "rpi4")
     #)
     #AddToFileServer("linux-initrd" ${output_overlayed_rootfs_location} DEPENDS rootfs_target)
     
-    AddToFileServer("linux-initrd" ${rootfs_file} )
+    #AddToFileServer("linux-initrd" ${rootfs_file} )
     
     # Updated dtb based on generated initrd
     #UpdateDtbFromInitrd(
