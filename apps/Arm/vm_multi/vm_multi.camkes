@@ -30,6 +30,10 @@ component VM {
     maybe uses VirtQueueDrv send2;
     attribute vswitch_mapping vswitch_layout[] = [];
     attribute string vswitch_mac_address = "";
+    maybe dataport Buf buff;
+    maybe dataport Buf dummy_port;
+    emits SendEvent ready;
+    maybe consumes SendEvent done;
 }
 
 assembly {
@@ -54,6 +58,16 @@ assembly {
         connection seL4VMDTBPassthrough vm0_dtb(from vm0.dtb_self, to vm0.dtb);
         connection seL4VMDTBPassthrough vm1_dtb(from vm1.dtb_self, to vm1.dtb);
         connection seL4VMDTBPassthrough vm2_dtb(from vm2.dtb_self, to vm2.dtb);
+
+        /* Inter VM */
+        connection seL4GlobalAsynch event_conn_1(from vm0.ready, to vm1.done);
+        connection seL4GlobalAsynch event_conn_2(from vm1.ready, to vm0.done);
+        connection seL4GlobalAsynch event_conn_3(from vm2.ready, to vm2.done);
+        //connection seL4GlobalAsynch event_conn_4(from vm2.ready, to vm0.done);
+        //connection seL4SharedDataWithCaps shared_mem_1(from vm0.dummy_port, to vm0.buff, to vm1.buff, to vm2.buff);
+        //connection seL4SharedDataWithCaps shared_mem_1(from vm0.buff, to vm1.buff);
+        connection seL4SharedDataWithCaps shared_mem_1(from vm0.dummy_port, to vm2.buff);
+        connection seL4SharedDataWithCaps shared_mem_2(from vm1.buff, to vm0.buff);
     }
     configuration {
         VM_GENERAL_CONFIGURATION_DEF()
