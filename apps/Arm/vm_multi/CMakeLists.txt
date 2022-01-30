@@ -92,6 +92,8 @@ AddCamkesCPPFlag(cpp_flags CONFIG_VARS VmEmmc2NoDMA VmVUSB VmVchan Tk1DeviceFwd 
 
 DefineCAmkESVMFileServer()
 
+DeclareCAmkESComponent(VM SOURCES src/init_dataport_ram.c)
+
 CAmkESAddImportPath(${KernelARMPlatform})
 
 # Declare root server
