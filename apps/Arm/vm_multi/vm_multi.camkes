@@ -43,10 +43,10 @@ assembly {
         /* Other standard VM defintions (vm0, vm1, vm1) */
         VM_COMPOSITION_DEF(0)
         VM_COMPOSITION_DEF(1)
-        /* vm0,vm1 & vm2 serial connections */
+        /* vm0 & vm1 serial connections */
         VM_VIRTUAL_SERIAL_COMPOSITION_DEF(0,1)
 
-        /* vm0-[vm1,vm2] connection */
+        /* vm0-[vm1] connection */
         component VirtQueueInit vm1_vm0;
         connection seL4VirtQueues vm1_vm0_conn(to vm1_vm0.init, from vm0.send1, from vm0.recv1, from vm1.send1, from vm1.recv1);
 
