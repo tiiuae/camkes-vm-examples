@@ -31,7 +31,6 @@ component VM {
     attribute vswitch_mapping vswitch_layout[] = [];
     attribute string vswitch_mac_address = "";
     maybe dataport Buf buff;
-    maybe dataport Buf dummy_port;
     emits SendEvent ready;
     maybe consumes SendEvent done;
 }
@@ -44,10 +43,10 @@ assembly {
         /* Other standard VM defintions (vm0, vm1, vm1) */
         VM_COMPOSITION_DEF(0)
         VM_COMPOSITION_DEF(1)
-        /* vm0,vm1 serial connections */
+        /* vm0,vm1 & vm2 serial connections */
         VM_VIRTUAL_SERIAL_COMPOSITION_DEF(0,1)
 
-        /* vm0-[vm1] connection */
+        /* vm0-[vm1,vm2] connection */
         component VirtQueueInit vm1_vm0;
         connection seL4VirtQueues vm1_vm0_conn(to vm1_vm0.init, from vm0.send1, from vm0.recv1, from vm1.send1, from vm1.recv1);
 
@@ -58,10 +57,6 @@ assembly {
         /* Inter VM */
         connection seL4GlobalAsynch event_conn_1(from vm0.ready, to vm1.done);
         connection seL4GlobalAsynch event_conn_2(from vm1.ready, to vm0.done);
-        //connection seL4GlobalAsynch event_conn_4(from vm2.ready, to vm0.done);
-        //connection seL4SharedDataWithCaps shared_mem_1(from vm0.dummy_port, to vm0.buff, to vm1.buff, to vm2.buff);
-        //connection seL4SharedDataWithCaps shared_mem_1(from vm0.buff, to vm1.buff);
-        //connection seL4SharedDataWithCaps shared_mem_1(from vm0.dummy_port, to vm2.buff);
         connection seL4SharedDataWithCaps shared_mem_2(from vm0.buff, to vm1.buff);
     }
     configuration {
@@ -102,6 +97,7 @@ assembly {
         vm1_vm0.init_topology = [{ "drv" : "vm0.send1", "dev" : "vm1.recv1"},
                                  { "drv" : "vm1.send1", "dev" : "vm0.recv1"}];
 
+        /* Inter VM */
         vm0.buff_id = 0;
         vm0.buff_size = 4096;
         vm1.buff_id = 0;

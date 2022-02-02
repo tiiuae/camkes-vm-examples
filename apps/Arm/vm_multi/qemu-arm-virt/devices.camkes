@@ -8,7 +8,6 @@
 
 #define VM_RAM_OFFSET 0x00000000
 #define VM_INITRD_MAX_SIZE 0x3200000 //50 MB
-#define VM_SHARED_MEMORY_SIZE 4096
 
 #define VM0_RAM_BASE 0x40000000
 #define VM0_RAM_SIZE 0x8000000
@@ -23,9 +22,6 @@
 assembly {
     composition {}
     configuration {
-
-        vm_buff.paddr = 0xDF000000;
-        vm_buff.size = 0x1000;
 
         vm0.linux_address_config = {
             "linux_ram_base" : VAR_STRINGIZE(VM0_RAM_BASE),
@@ -42,7 +38,6 @@ assembly {
             "dtb_name" : "",
             "initrd_name" : "linux-initrd-vm0",
             "vm_name" : "vm0",
-            "shared_memory_size" : VM_SHARED_MEMORY_SIZE,
         };
         vm0.dtb = dtb([
                         {"path": "/pcie@10000000"},
@@ -73,7 +68,6 @@ assembly {
             "dtb_name" : "",
             "initrd_name" : "linux-initrd-vm-client",
             "vm_name" : "vm1",
-            "shared_memory_size" : VM_SHARED_MEMORY_SIZE,
         };
         vm1.mmios = [
                     "0x8040000:0x1000:12", // Interrupt Controller Virtual CPU interface (Virtual Machine view)

@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 #
 
-set(supported "exynos5422;qemu-arm-virt")
+set(supported "exynos5422;qemu-arm-virt;rpi4")
 if(NOT "${PLATFORM}" IN_LIST supported)
     message(FATAL_ERROR "PLATFORM: ${PLATFORM} not supported.
          Supported: ${supported}")
@@ -21,5 +21,4 @@ if("${PLATFORM}" STREQUAL "qemu-arm-virt")
     set(qemu_sim_extra_args "-netdev tap,id=mynet0,ifname=tap0,script=no,downscript=no -device virtio-net,netdev=mynet0,mac=52:55:00:d1:55:01")
     set(KernelArmExportPCNTUser ON CACHE BOOL "" FORCE)
     set(KernelArmExportPTMRUser ON CACHE BOOL "" FORCE)
-    set(SharedMemory ON CACHE BOOL "" FORCE)
 endif()

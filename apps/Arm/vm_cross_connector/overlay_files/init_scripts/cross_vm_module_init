@@ -5,4 +5,9 @@
 # SPDX-License-Identifier: BSD-2-Clause
 #
 
-insmod /lib/modules/4.14.87/kernel/drivers/vmm/connection.ko
+echo "HERE"
+
+mknod /dev/ttyAMA0 c 204 64
+
+#insmod /lib/modules/4.14.87/kernel/drivers/vmm/connection.ko
+

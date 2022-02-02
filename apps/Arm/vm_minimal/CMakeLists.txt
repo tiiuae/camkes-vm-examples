@@ -6,7 +6,7 @@
 
 cmake_minimum_required(VERSION 3.8.2)
 
-project(camkes-arm-tk1-vm C)
+project(camkes-vm-minimal C)
 
 include(${CAMKES_ARM_VM_HELPERS_PATH})
 
@@ -128,6 +128,60 @@ elseif("${KernelARMPlatform}" STREQUAL "odroidc2")
         output_dtb_location
     )
     AddToFileServer("linux-dtb" "${output_dtb_location}" DEPENDS dtb_gen_target)
+    
+elseif("${KernelARMPlatform}" STREQUAL "rpi4")
+    find_package(camkes-vm-linux REQUIRED)
+    include(${CAMKES_VM_LINUX_HELPERS_PATH})
+    set(cpp_flags "-DKERNELARMPLATFORM_RPI4")
+
+    # Add kernel image to file server
+    AddToFileServer("linux" "${CAMKES_VM_IMAGES_DIR}/rpi4/linux")
+    
+    # Generate overlayed rootfs
+    set(rootfs_file "${CAMKES_VM_IMAGES_DIR}/rpi4/rootfs.cpio.gz")
+    
+    # Add hvc0 init script
+    #AddFileToOverlayDir(
+    #    "inittab"
+    #    "${CAMKES_VM_IMAGES_DIR}/rpi4/inittab_hvc0"
+    #    "etc"
+    #    overlay
+    #)
+
+    #AddOverlayDirToRootfs(
+    #    overlay
+    #    ${rootfs_file}
+    #    "buildroot"
+    #    "rootfs_install"
+    #    output_overlayed_rootfs_location
+    #    rootfs_target
+    #    GZIP
+    #)
+    #AddToFileServer("linux-initrd" ${output_overlayed_rootfs_location} DEPENDS rootfs_target)
+    
+    #AddToFileServer("linux-initrd" ${rootfs_file} )
+    
+    # Updated dtb based on generated initrd
+    #UpdateDtbFromInitrd(
+    #    "${CAMKES_VM_IMAGES_DIR}/rpi4/linux-dtb"
+    #    ${output_overlayed_rootfs_location}
+    #    "0x5D000000"
+    #    dtb_gen_target
+    #    output_dtb_location
+    #    DEPENDS
+    #    rootfs_target
+    #)
+    UpdateDtbFromInitrd(
+        "${CAMKES_VM_IMAGES_DIR}/rpi4/linux-dtb"
+        ${rootfs_file}
+        "0x5D000000"
+        dtb_gen_target
+        output_dtb_location
+    )
+
+    # Add DTB to file server
+    AddToFileServer("linux-dtb" "${output_dtb_location}" DEPENDS dtb_gen_target)
+    
 endif()
 
 AddCamkesCPPFlag(cpp_flags CONFIG_VARS VmEmmc2NoDMA VmVUSB Tk1DeviceFwd Tk1Insecure)

@@ -59,7 +59,7 @@ AddFileToOverlayDir(
 )
 AddFileToOverlayDir(
     "S90client_net_vm"
-    ${CMAKE_CURRENT_SOURCE_DIR}/overlay_files/vm_client_net_setup.sh
+    ${CMAKE_CURRENT_SOURCE_DIR}/overlay_files/vm_client_net_setup_multi.sh
     "etc/init.d"
     overlay_client_vm
 )
@@ -92,7 +92,7 @@ AddCamkesCPPFlag(cpp_flags CONFIG_VARS VmEmmc2NoDMA VmVUSB VmVchan Tk1DeviceFwd 
 
 DefineCAmkESVMFileServer()
 
-DeclareCAmkESComponent(VM SOURCES src/init_dataport_ram.c)
+DeclareCAmkESComponent(VM SOURCES src/shared_memory.c)
 
 CAmkESAddImportPath(${KernelARMPlatform})
 
