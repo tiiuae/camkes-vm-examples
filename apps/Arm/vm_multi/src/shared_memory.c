@@ -30,17 +30,8 @@ struct dataport_iterator_cookie {
     vm_t *vm;
 };
 
-//example going from linux to native component
-static void sys_ipa_to_pa(void *cookie)
-{
-    printf("address from linux is %x\n", *(seL4_Word *)buff);
-    ready_emit();
-}
-
 // these are defined in the dataport's glue code
 extern dataport_caps_handle_t buff_handle;
-
-void done_emit_underlying(void); 
 
 static struct camkes_crossvm_connection connections[] = {
 	{&buff_handle, NULL, -1, NULL}
@@ -98,9 +89,6 @@ static vm_frame_t dataport_memory_iterator(uintptr_t addr, void *cookie)
     return frame_result;
 }
 
-void done_emit_underlying(void) WEAK;
-void ready_emit_underlying(void) WEAK;
-extern seL4_Word done_notification_badge(void);
 void init_shared_memory(vm_t *vm, void *cookie)
 {
     int err;
