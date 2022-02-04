@@ -37,6 +37,7 @@ assembly {
             "linux_stdout" : "hvc0",
             "dtb_name" : "",
             "initrd_name" : "linux-initrd-vm0",
+            "vm_name" : "vm0",
         };
 	vm0.mmios = [
 	     "0xff846000:0x1000:12"
@@ -63,6 +64,7 @@ assembly {
             "linux_stdout" : "hvc0",
             "dtb_name" : "",
             "initrd_name" : "linux-initrd-vm-client",
+            "vm_name" : "vm1",
         };
 	vm1.mmios = [
 	    "0xff846000:0x1000:12"
@@ -87,6 +89,7 @@ assembly {
             "linux_stdout" : "hvc0",
             "dtb_name" : "",
             "initrd_name" : "linux-initrd-vm-client",
+            "vm_name" : "vm2",
         };
         vm2.mmios = [
 	    "0xff846000:0x1000:12"

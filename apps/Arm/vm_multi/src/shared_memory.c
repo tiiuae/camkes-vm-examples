@@ -116,7 +116,7 @@ void init_shared_memory(vm_t *vm, void *cookie)
         write_buffer(vm, CONNECTION_BASE_ADDRESS);
 
         char *ptr = (char *)buff;
-        printf("Writting buff: %p - 0x%x\n", ptr, *ptr);
+        printf("VM: %s - Writting buff: %p - 0x%x\n", linux_image_config.vm_name, ptr, *ptr);
 
     } else if (!strcmp(linux_image_config.vm_name, "vm1")) { 
         int i=0;
@@ -128,7 +128,7 @@ void init_shared_memory(vm_t *vm, void *cookie)
         read_buffer(vm, CONNECTION_BASE_ADDRESS);
 
         char *ptr = (char *)buff;
-        printf("Reading buff: %p - 0x%x\n", ptr, *ptr);
+        printf("VM: %s - Reading buff: %p - 0x%x\n", linux_image_config.vm_name, ptr, *ptr);
 
     }
 }
