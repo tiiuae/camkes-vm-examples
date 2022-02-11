@@ -15,10 +15,10 @@
 #define VM_RAM_OFFSET 0
 #define VM_INITRD_MAX_SIZE 0x2000000 //32 MB
 
-#define VM_RAM_BASE    0x50000000
+#define VM_RAM_BASE    0x10000000
 #define VM_RAM_SIZE    0x10000000 // 256MB
-#define VM_DTB_ADDR    0x5E000000 // (0x60000000 - 0x5E000000) = 0x1000000 (16MB)
-#define VM_INITRD_ADDR 0x5D000000 // (0x60000000 - 0x2000000) - 0x1000000
+#define VM_DTB_ADDR    0x1E000000 // (0x60000000 - 0x5E000000) = 0x1000000 (16MB)
+#define VM_INITRD_ADDR 0x1D000000 // (0x60000000 - 0x2000000) - 0x1000000
 
 assembly {
     composition {}
@@ -35,12 +35,32 @@ assembly {
 
         /* either specify "option root-path" in dhcpd.conf or use nfsroot= here */
         vm0.linux_image_config = {
-            "linux_bootcmdline" : "console=hvc0 root=/dev/nfs rootfstype=nfs ip=dhcp rw debug loglevel=7 pci=nomsi initcall_debug initcall_blacklist=clk_disable_unused",
+            "linux_bootcmdline" : "console=hvc0 root=/dev/nfs rootfstype=nfs ip=dhcp rw debug loglevel=7 pci=nomsi cma=32MB",
             "linux_stdout" : "hvc0",
         };
 
         vm0.dtb = dtb([
-            { "path": "/scb/ethernet@7d580000" }
+            { "path": "/scb/ethernet@7d580000" },
+	    { "path": "/soc/mailbox@7e00b880" },
+	    { "path": "/soc/firmware" },
+	    { "path": "/soc/dma-ranges" },
+	    { "path": "/soc/cprman@7e101000" },
+	    { "path": "/soc/watchdog@7e100000" },
+	    { "path": "/soc/dma@7e007000" },
+	    { "path": "/soc/hdmi@7ef00700" },
+	    { "path": "/soc/i2c@7ef04500" },
+	    { "path": "/soc/hvs@7e400000" },
+	    { "path": "/soc/interrupt-controller@7ef00100" },
+	    { "path": "/soc/hdmi@7ef05700" },
+	    { "path": "/soc/i2c@7ef09500" },
+	    { "path": "/soc/pixelvalve@7e206000" },
+	    { "path": "/soc/pixelvalve@7e207000" },
+	    { "path": "/soc/pixelvalve@7e20a000" },
+	    { "path": "/soc/pixelvalve@7e216000" },
+	    { "path": "/soc/pixelvalve@7ec12000" },
+	    { "path": "/soc/txp@7e004000" },
+	    { "path": "/gpu" },
+	    { "path": "/v3dbus/v3d@7ec04000" },
         ]);
 
         /* NOTE: previously, passing the vCPU interface as
@@ -64,7 +84,7 @@ assembly {
          */
 
         vm0.untyped_mmios = [
-            "0x50000000:28", // RAM PADDR
+            "0x10000000:28", // RAM PADDR
             "0xff846000:13"
         ];
     }
