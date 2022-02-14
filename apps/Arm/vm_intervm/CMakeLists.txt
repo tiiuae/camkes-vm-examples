@@ -98,7 +98,7 @@ CAmkESAddImportPath(${KernelARMPlatform})
 
 # Declare root server
 DeclareCAmkESRootserver(
-    vm_multi.camkes
+    vm_intervm.camkes
     CPP_FLAGS
     ${cpp_flags}
     CPP_INCLUDES
