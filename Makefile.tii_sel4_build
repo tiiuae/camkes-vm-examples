@@ -1,0 +1,2 @@
+vm_multi:
+	CAMKES_VM_APP=vm_multi make build_camkes 
