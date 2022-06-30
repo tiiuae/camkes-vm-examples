@@ -32,8 +32,27 @@ assembly {
          * the 2M frame mapping issue on RPi4. Figure out why.
          * Also the 12bit pools were not necessary after all.
          */
-        vm0.cnode_size_bits = 18;
-        vm0.simple_untyped24_pool = 12;
+        // This controls the amount of CSlots - if this is too small, then
+        // allocation will even though 'simple_untyped<N>_pool' size would be
+        // enough. Note: 18 bits is not enough for 512MB.
+        vm0.cnode_size_bits = 23;
+
+        // VM can use these 'simple_untyped<N>_pool' to allocate RAM too,
+        // if RAM size is larger than allocated 'untyped_mmios'. If using
+        // these pools for VM RAM, it is a good idea to leave some for VMM
+        // (not sure if uses those).
+        //
+        // Use different sized pools to adjust the the size required by RAM.
+        // For example. To allocate 64MB, one can just have one:
+        // vm0.simple_untyped26_pool = 1;
+        // or four 16MB regions
+        // vm0.simple_untyped24_pool = 4;
+        //
+        // However VMM seems to need some untyped pool as well, so make sure to
+        // allocate some extra too.
+        //
+        // Here we allocate 256MB (16) + some extra for VMM (4) = 20.
+        vm0.simple_untyped24_pool = 20;
         //vm0.simple_untyped12_pool = 12;
     }
 }
