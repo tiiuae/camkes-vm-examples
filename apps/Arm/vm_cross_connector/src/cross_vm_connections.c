@@ -44,3 +44,4 @@ void init_cross_vm_connections(vm_t *vm, void *cookie)
 }
 
 DEFINE_MODULE(cross_vm_connections, NULL, init_cross_vm_connections)
+DEFINE_MODULE_DEP(cross_vm_connections, vpci_init)
